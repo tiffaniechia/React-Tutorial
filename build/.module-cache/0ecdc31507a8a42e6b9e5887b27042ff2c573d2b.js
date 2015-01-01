@@ -1,33 +1,19 @@
 var CommentBox = React.createClass({displayName: "CommentBox",
-  loadCommentsFromServer: function(){
-    $.ajax({
-      url: this.props.url,
-      dataType: 'json',
-      success: function(data){
-        this.setState({data: data});
-      }.bind(this),
-      error: function(xhr, status, err){
-        console.error(this.props.url, status, err.toString());
-      }.bind(this)
-    });
-  },
-  getInitialState: function(){
-    return{data: []};
-  },
-  componentDidMount: function(){
-    this.loadCommentsFromServer();
-    setInterval(this.loadCommentsFromServer, this.props.pollInterval)
-  },
   render: function(){
     return(
       React.createElement("div", {className: "commentBox"}, 
         React.createElement("h1", null, "Comments"), 
-        React.createElement(CommentList, {data: this.state.data}), 
+        React.createElement(CommentList, {data: this.props.data}), 
         React.createElement(CommentForm, null)
       )
     );
   }
 });
+
+var data = [
+    {author: "Pete Hunt", text: "This is one comment"},
+    {author: "Jordan Walke", text: "This is *another* comment"}
+];
 
 var CommentList = React.createClass({displayName: "CommentList",
   render: function(){
@@ -40,7 +26,7 @@ var CommentList = React.createClass({displayName: "CommentList",
     });
     return(
       React.createElement("div", {className: "commentList"}, 
-        React.createElement("span", null, " ", commentNodes, " ")
+        commentNodes
       )
     );
   }
@@ -66,7 +52,7 @@ var CommentForm = React.createClass({displayName: "CommentForm",
 });
 
 React.render(
-  React.createElement(CommentBox, {url: "src/comments.json", pollInterval: 500}), 
+  React.createElement(CommentBox, {url: "comments.json"}), 
   document.getElementById('content')
  );
 

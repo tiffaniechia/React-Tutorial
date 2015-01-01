@@ -40,7 +40,7 @@ var CommentList = React.createClass({displayName: "CommentList",
     });
     return(
       React.createElement("div", {className: "commentList"}, 
-        React.createElement("span", null, " ", commentNodes, " ")
+        commentNodes
       )
     );
   }
